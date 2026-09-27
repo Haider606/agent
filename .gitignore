@@ -1,0 +1,16 @@
+node_modules/
+dist/
+
+.env
+.env.*
+!.env.example
+
+storage/logs/
+storage/*.log
+storage/queue.json
+
+*.log
+*.pdf
+
+.DS_Store
+Thumbs.db

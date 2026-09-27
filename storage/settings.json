@@ -1,0 +1,26 @@
+{
+  "auth": {
+    "accessToken": null,
+    "refreshToken": null,
+    "userId": null,
+    "email": null,
+    "role": null,
+    "branchId": null,
+    "branchName": null,
+    "loggedInAt": null
+  },
+  "printers": {
+    "receipt": null,
+    "kitchen": null,
+    "bar": null,
+    "dispatch": null
+  },
+  "cloud": {
+    "agentId": null,
+    "registeredAt": null
+  },
+  "app": {
+    "firstRun": true,
+    "version": "2.0.0"
+  }
+}
