@@ -1,0 +1,185 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' http://127.0.0.1:3001;">
+  <title>Stocko Print Agent</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- ═══════════════════════════════════════
+       VIEW: LOGIN
+       ═══════════════════════════════════════ -->
+  <div id="view-login" class="view">
+    <div class="login-card">
+      <div class="brand">
+        <div class="logo">S</div>
+        <h1>Stocko Print Agent</h1>
+        <p class="version" id="app-version">v2.0.0</p>
+      </div>
+
+      <form id="login-form" autocomplete="off">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="manager@stocko.app" required autofocus />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" id="btn-login" class="btn-primary">
+          <span class="btn-text">Sign In</span>
+          <span class="spinner hidden"></span>
+        </button>
+        <p id="login-error" class="error-msg hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       VIEW: DASHBOARD
+       ═══════════════════════════════════════ -->
+  <div id="view-dashboard" class="view hidden">
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo-sm">S</div>
+        <h2>Stocko Print Agent</h2>
+        <span id="cloud-pill" class="pill pill-offline">Offline</span>
+      </div>
+      <div class="topbar-right">
+        <span id="update-badge" class="update-badge hidden">Update available</span>
+        <button id="btn-check-update" class="btn-ghost" title="Check for updates">↻</button>
+        <button id="btn-logout" class="btn-ghost">Logout</button>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <!-- Status cards -->
+      <section class="grid-3">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">☁</span>
+            <h3>Cloud</h3>
+          </div>
+          <div class="metric" id="cloud-status">Connecting…</div>
+          <div class="sub" id="cloud-detail">—</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🖨</span>
+            <h3>Queue</h3>
+          </div>
+          <div class="metric" id="queue-pending">0</div>
+          <div class="sub">pending jobs</div>
+          <div class="queue-breakdown">
+            <span class="tag tag-warn" id="queue-failed">0 failed</span>
+            <span class="tag tag-danger" id="queue-dead">0 dead</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🖨</span>
+            <h3>Printers</h3>
+          </div>
+          <div class="printer-list">
+            <div class="printer-row">
+              <span class="printer-label">Receipt</span>
+              <span class="printer-value" id="printer-receipt">Not set</span>
+            </div>
+            <div class="printer-row">
+              <span class="printer-label">Dispatch</span>
+              <span class="printer-value" id="printer-dispatch">Not set</span>
+            </div>
+            <div class="printer-row">
+              <span class="printer-label">Label</span>
+              <span class="printer-value" id="printer-label">Not set</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Printer settings -->
+      <section class="card settings-card">
+        <div class="card-header">
+          <h3>Printer Settings</h3>
+          <span class="badge" id="role-badge">User</span>
+        </div>
+        <p class="hint">Manager and Developer can select printers for this workstation. Other users are read-only.</p>
+
+        <div class="form-row">
+          <div class="select-group">
+            <label>Receipt Printer</label>
+            <select id="sel-receipt">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+          <div class="select-group">
+            <label>Dispatch Printer</label>
+            <select id="sel-dispatch">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+          <div class="select-group">
+            <label>Label Printer</label>
+            <select id="sel-label">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-save-printers" class="btn-primary btn-sm">Save Printers</button>
+        <p id="printer-msg" class="hint ok hidden">Saved ✓</p>
+      </section>
+
+      <!-- Print calibration -->
+      <section class="card settings-card" id="print-calibration">
+        <div class="card-header">
+          <h3>80mm Print Calibration</h3>
+          <span class="badge">Thermal</span>
+        </div>
+        <p class="hint">Use this when text is cut on the left or right. Developer-only control. Default is 80mm paper with a safer 70mm printable area to protect both edges.</p>
+        <div class="calibration-grid">
+          <div class="select-group"><label>Paper width (mm)</label><input id="print-paper-width" type="number" min="48" max="100" step="1" value="80"></div>
+          <div class="select-group"><label>Printable width (mm)</label><input id="print-content-width" type="number" min="30" max="90" step="0.5" value="70"></div>
+          <div class="select-group"><label>Left margin (mm)</label><input id="print-margin-left" type="number" min="0" max="15" step="0.5" value="4"></div>
+          <div class="select-group"><label>Right margin (mm)</label><input id="print-margin-right" type="number" min="0" max="15" step="0.5" value="6"></div>
+          <div class="select-group"><label>Text size</label><input id="print-font-scale" type="number" min="0.75" max="1.25" step="0.05" value="1"></div>
+          <div class="select-group"><label>Driver scaling</label><select id="print-driver-scale"><option value="fit">Fit (recommended)</option><option value="shrink">Shrink only</option><option value="noscale">No scale</option></select></div>
+        </div>
+        <div class="calibration-preview"><div id="paper-preview" class="paper-preview"><div id="printable-preview" class="printable-preview"><b>STOCKO TEST</b><span>Item  Qty  Rate  Total</span><span>Right edge → |</span></div></div></div>
+        <div class="button-row">
+          <button id="btn-save-print" class="btn-primary btn-sm">Save Print Size</button>
+          <button id="btn-test-print" class="btn-ghost btn-sm">Print Test Receipt</button>
+          <button id="btn-reset-print" class="btn-ghost btn-sm">Reset 80mm Default</button>
+        </div>
+        <p class="hint">If the right side is still cut: lower Printable width from 70 to 68mm, or increase the margin on the cut side. Save, then Print Test Receipt.</p>
+      </section>
+
+      <!-- Update panel -->
+      <section class="card update-card hidden" id="panel-update">
+        <div class="card-header">
+          <h3>Update Ready</h3>
+        </div>
+        <p>A new version has been downloaded. Restart to apply.</p>
+        <button id="btn-restart" class="btn-primary">Restart Now</button>
+      </section>
+
+      <!-- Logs -->
+      <section class="card logs-card">
+        <div class="card-header">
+          <h3>Recent Logs</h3>
+          <button id="btn-refresh-logs" class="btn-ghost btn-sm">Refresh</button>
+        </div>
+        <pre id="logs-output" class="logs">Waiting for logs…</pre>
+      </section>
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

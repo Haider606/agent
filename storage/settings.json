@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "accessToken": null,
+    "refreshToken": null,
+    "userId": null,
+    "email": null,
+    "role": null,
+    "branchId": null,
+    "branchName": null,
+    "loggedInAt": null
+  },
+  "printers": {
+    "receipt": null,
+    "dispatch": null,
+    "label": null
+  },
+  "cloud": {
+    "agentId": null,
+    "registeredAt": null
+  },
+  "app": {
+    "firstRun": true,
+    "version": "2.0.0"
+  },
+  "print": {
+    "paperWidthMm": 80,
+    "printableWidthMm": 72,
+    "marginLeftMm": 3,
+    "marginRightMm": 5,
+    "fontScale": 1,
+    "driverScale": "fit"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "name": "stocko-print-agent",
+  "version": "2.2.0",
+  "description": "Stocko Print Agent \u2014 Professional Restaurant Print Service",
+  "main": "main.js",
+  "type": "commonjs",
+  "author": "Stocko",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --inspect=5858",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "postinstall": "electron-builder install-app-deps",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "electron-updater": "^6.6.0",
+    "express": "^5.2.1",
+    "pdf-to-printer": "^5.8.0",
+    "pdfkit": "^0.19.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "electron": "^37.0.0",
+    "electron-builder": "^26.15.3",
+    "rimraf": "^6.0.1"
+  },
+  "build": {
+    "appId": "com.stocko.printagent",
+    "productName": "Stocko Print Agent",
+    "copyright": "Copyright \u00a9 2026 Stocko",
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": ".env",
+        "to": ".env"
+      }
+    ],
+    "files": [
+      "**/*",
+      ".env",
+      "!dist/**/*",
+      "!node_modules/.cache/**/*",
+      "!*.log",
+      "!.git/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Stocko Print Agent",
+      "artifactName": "Stocko-Print-Agent-Setup-${version}.${ext}",
+      "deleteAppDataOnUninstall": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Haider606",
+      "repo": "agent",
+      "releaseType": "release"
+    }
+  }
+}
