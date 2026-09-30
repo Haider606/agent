@@ -1,7 +1,7 @@
 {
   "name": "stocko-print-agent",
-  "version": "2.2.0",
-  "description": "Stocko Print Agent \u2014 Professional Restaurant Print Service",
+  "version": "2.2.1",
+  "description": "Stocko Print Agent — Professional Restaurant Print Service",
   "main": "main.js",
   "type": "commonjs",
   "author": "Stocko",
@@ -32,7 +32,7 @@
   "build": {
     "appId": "com.stocko.printagent",
     "productName": "Stocko Print Agent",
-    "copyright": "Copyright \u00a9 2026 Stocko",
+    "copyright": "Copyright © 2026 Stocko",
     "asar": true,
     "compression": "maximum",
     "directories": {
@@ -46,7 +46,7 @@
     ],
     "files": [
       "**/*",
-      ".env",
+      "!.env",
       "!dist/**/*",
       "!node_modules/.cache/**/*",
       "!*.log",
