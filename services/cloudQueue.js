@@ -3,8 +3,8 @@ const settings = require("../storage/settings");
 const { executePrint } = require("./printExecutor");
 const logger = require("../logs/logger");
 
-const SUPABASE_URL = process.env.SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
 const POLL_INTERVAL_MS = 5000;
 const REQUEST_TIMEOUT_MS = 15000;
 

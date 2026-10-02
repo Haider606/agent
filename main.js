@@ -1,5 +1,4 @@
 const path = require("path");
-const dotenv = require("dotenv");
 
 const {
   app,
@@ -11,11 +10,14 @@ const {
   ipcMain,
 } = require("electron");
 
-const envPath = app.isPackaged
-  ? path.join(process.resourcesPath, ".env")
-  : path.join(__dirname, ".env");
-
-dotenv.config({ path: envPath });
+// Load environment before importing any service that creates a Supabase client.
+// Supports both SUPABASE_* and the VITE_SUPABASE_* names used by Stocko.
+const { loadEnvironment } = require("./config/env");
+loadEnvironment({
+  isPackaged: app.isPackaged,
+  resourcesPath: process.resourcesPath,
+  appDir: __dirname,
+});
 
 const logger = require("./logs/logger");
 const heartbeat = require("./services/heartbeat");

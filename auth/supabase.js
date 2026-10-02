@@ -11,8 +11,8 @@ const logger = require("../logs/logger");
 // Supabase client
 // ---------------------------------------------------------------------------
 
-const SUPABASE_URL = process.env.SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "";
 
 let supabase = null;
 
@@ -20,7 +20,7 @@ function getClient() {
   if (!supabase) {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
       throw new Error(
-        "Supabase credentials missing. Set SUPABASE_URL and SUPABASE_ANON_KEY environment variables."
+        "Supabase credentials missing. Set SUPABASE_URL/SUPABASE_ANON_KEY or VITE_SUPABASE_URL/VITE_SUPABASE_ANON_KEY in .env."
       );
     }
     supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {

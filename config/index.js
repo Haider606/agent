@@ -18,7 +18,7 @@ module.exports = {
   PORT: 3001,
   HOST: "127.0.0.1",
   APP_NAME: "Stocko Print Agent",
-  APP_VERSION: "2.2.0",
+  APP_VERSION: "2.2.1",
   IS_PACKAGED,
   BASE_DIR,
   OUTPUT_DIR: path.join(BASE_DIR, "receipts"),
