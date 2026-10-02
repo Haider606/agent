@@ -1,4 +1,4 @@
-name: Build and Publish Windows Release
+name: Build and Release Stocko Print Agent
 
 on:
   push:
@@ -9,24 +9,38 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: npm
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Create production environment
-        shell: powershell
+      - name: Validate Supabase secrets
+        shell: pwsh
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:SUPABASE_URL)) {
+            throw "SUPABASE_URL GitHub secret is missing."
+          }
+
+          if ([string]::IsNullOrWhiteSpace($env:SUPABASE_ANON_KEY)) {
+            throw "SUPABASE_ANON_KEY GitHub secret is missing."
+          }
+
+      - name: Create production environment file
+        shell: pwsh
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -34,7 +48,21 @@ jobs:
           "SUPABASE_URL=$env:SUPABASE_URL" | Out-File -FilePath ".env" -Encoding utf8
           "SUPABASE_ANON_KEY=$env:SUPABASE_ANON_KEY" | Out-File -FilePath ".env" -Encoding utf8 -Append
 
-      - name: Build and publish
+      - name: Build Windows installer
+        run: npm run dist:win -- --publish never
+
+      - name: Show generated files
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path dist -Recurse | Select-Object FullName, Length
+
+      - name: Upload files to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/Stocko-Print-Agent-Setup-*.exe
+            dist/Stocko-Print-Agent-Setup-*.exe.blockmap
+            dist/latest.yml
+          fail_on_unmatched_files: true
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run dist:win -- --publish always
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
