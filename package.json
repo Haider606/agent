@@ -1,6 +1,6 @@
 {
   "name": "stocko-print-agent",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Stocko Print Agent — Professional Restaurant Print Service",
   "main": "main.js",
   "type": "commonjs",
